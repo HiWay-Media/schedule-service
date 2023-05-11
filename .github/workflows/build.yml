@@ -16,7 +16,9 @@ jobs:
   push_dockerhub:
     name: Push image to Docker Hub
     runs-on: ubuntu-latest
-
+    permissions:
+      contents: read
+      packages: write
     steps:
       # Checkout the repository to the GitHub Actions runner
       - name: Checkout
