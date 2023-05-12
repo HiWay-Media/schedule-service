@@ -242,8 +242,8 @@ export class MRSSAutoScheduler {
               channelId: feed.channelId,
               title: asset.title,
               duration: totalScheduleEventDuration,
-              start_time: nextStartTime,
-              end_time: nextEndTime,
+              start_time: asset.startTime,
+              end_time: asset.endTime,
               url: asset.url,
               type: ScheduleEventType.VOD,
             }));  
