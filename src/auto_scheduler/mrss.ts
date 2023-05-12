@@ -236,7 +236,7 @@ export class MRSSAutoScheduler {
             }));
             feed.resetLiveEventCountdown();
           } else {
-            console.log(`[${feed.channelId}]: Adding schedule event (${ScheduleEventType.VOD}): title=${asset.title}, start=${new Date(nextStartTime).toISOString()}, end=${new Date(nextEndTime).toISOString()}`);
+            console.log(`[${feed.channelId}]: Adding schedule event (${ScheduleEventType.VOD}): title=${asset.title}, start=${asset.startTime}, end=${endTime.endTime}`);
             scheduleEventsToAdd.push(new ScheduleEvent({
               id: uuidv4(),
               channelId: feed.channelId,
@@ -252,6 +252,7 @@ export class MRSSAutoScheduler {
           nextStartTime = nextEndTime;
         }
       }
+      console.log(`[${scheduleEventsToAdd}] ${now}`);
       for (const scheduleEvent of scheduleEventsToAdd) {
         await this.scheduleEventsDb.add(scheduleEvent);
       }
