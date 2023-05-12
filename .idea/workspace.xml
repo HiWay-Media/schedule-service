@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ea321260-ce25-40f3-a5da-6ea5edc92060" name="Changes" comment="fix" />
+    <list default="true" id="ea321260-ce25-40f3-a5da-6ea5edc92060" name="Changes" comment="fix">
+      <change beforePath="$PROJECT_DIR$/src/auto_scheduler/mrss.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/auto_scheduler/mrss.ts" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -62,7 +64,7 @@
       <option name="presentableId" value="Default" />
       <updated>1683877393639</updated>
       <workItem from="1683877394944" duration="1570000" />
-      <workItem from="1683878986947" duration="1067000" />
+      <workItem from="1683878986947" duration="1301000" />
     </task>
     <task id="LOCAL-00001" summary="feat: added custom starttime and endtime to the xml">
       <created>1683878244753</created>
