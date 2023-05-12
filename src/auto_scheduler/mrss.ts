@@ -203,6 +203,7 @@ export class MRSSAutoScheduler {
   private async populate(feed: MRSSFeed) {
     const now = dayjs();
     await feed.refresh();
+    const assets = feed.getAssets();
     console.log(`[${assets}]:get Assets() -> now: ${now}`);
     //
     const scheduleEvents = await this.scheduleEventsDb.getScheduleEventsByChannelId(feed.channelId, {
