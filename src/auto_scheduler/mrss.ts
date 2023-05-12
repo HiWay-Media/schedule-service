@@ -213,23 +213,18 @@ export class MRSSAutoScheduler {
     const ongoingAndFutureScheduleEvents = findOngoingAndFutureEvents(scheduleEvents, now);
     console.log(`ongoingAndFutureScheduleEvents=[${JSON.stringify(ongoingAndFutureScheduleEvents)}] `);
     if (ongoingAndFutureScheduleEvents.length <= 4) {
-      const numberOfScheduleEvents = 5 - ongoingAndFutureScheduleEvents.length;
       let scheduleEventsToAdd: ScheduleEvent[] = [];
-      let nextStartTime = findLastEndTime(ongoingAndFutureScheduleEvents, now);
-      for (let i = 0; i < numberOfScheduleEvents; i++) {
-        let asset = assets[Math.floor(Math.random() * assets.length)];
-        if (asset) {
+      for (let i = 0; i < assets.length; i++) {
+          const asset = assets[i]
           const totalScheduleEventDuration = asset.duration;
-          const nextEndTime = nextStartTime + totalScheduleEventDuration * 1000;
           if (feed.shouldInsertLive) {
-            console.log(`[${feed.channelId}]: Adding schedule event (${ScheduleEventType.LIVE}): url=${feed.liveUrl}, start=${new Date(nextStartTime).toISOString()}, end=${new Date(nextEndTime).toISOString()}`);
             scheduleEventsToAdd.push(new ScheduleEvent({
               id: uuidv4(),
               channelId: feed.channelId,
               title: "LIVE EVENT",
               duration: totalScheduleEventDuration,
-              start_time: nextStartTime,
-              end_time: nextEndTime,
+              start_time: asset.startTime,
+              end_time: asset.endTime,
               url: asset.url,
               liveUrl: feed.liveUrl,
               type: ScheduleEventType.LIVE,
@@ -250,8 +245,6 @@ export class MRSSAutoScheduler {
             debug(`scheduleEventsToAdd-> ${JSON.stringify(scheduleEventsToAdd)}`)
             feed.decreaseLiveEventCountdown();
           }
-          nextStartTime = nextEndTime;
-        }
       }
       console.log(`oncycle scheduleEventsToAdd [${JSON.stringify(scheduleEventsToAdd)}] ${now}`);
       for (const scheduleEvent of scheduleEventsToAdd) {
