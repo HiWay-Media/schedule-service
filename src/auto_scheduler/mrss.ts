@@ -126,6 +126,7 @@ export class MRSSAutoScheduler {
 
   // insert demo feed if not exists
   async bootstrap(demoTenant: string) {
+    return
     const availableFeeds = await this.feedsDb.listAll();
     if (availableFeeds.find(feed => feed.id === "eyevinn")) {
       debug("Demo feed already available");
@@ -206,7 +207,7 @@ export class MRSSAutoScheduler {
     const assets = feed.getAssets();
     const scheduleEvents = await this.scheduleEventsDb.getScheduleEventsByChannelId(feed.channelId, {
       start: now.subtract(2 * 60 * 60, "second").valueOf(),
-      end: now.add(12 * 60 * 60, "second").valueOf(),
+      // end: now.add(12 * 60 * 60, "second").valueOf(),
     });
     const ongoingAndFutureScheduleEvents = findOngoingAndFutureEvents(scheduleEvents, now);
     if (ongoingAndFutureScheduleEvents.length <= 4) {
