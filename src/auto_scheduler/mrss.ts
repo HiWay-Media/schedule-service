@@ -166,7 +166,9 @@ export class MRSSAutoScheduler {
     const availableFeeds = await this.feedsDb.listAll();
     if (availableFeeds.find(feed => feed.id === "eyevinn")) {
       debug("Demo feed already available");
-    } else {
+    }
+    else {
+      return
       debug("Creating demo feed");
       const demoFeed = new MRSSFeed({
         id: "eyevinn",
