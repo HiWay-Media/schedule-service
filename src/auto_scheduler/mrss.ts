@@ -21,75 +21,38 @@ export const MRSSAutoSchedulerAPI: FastifyPluginAsync = async (server: FastifyIn
   const { prefix } = options;
 
   server.register(async (server: FastifyInstance) => {
-
-    server.get<{ Body: any, Reply: any}>(
-        "/spruzz",
-        {
-          schema: {
-            body: MRSSFeed.schema,
-            response: {
-              200: MRSSFeed.schema,
-              400: Type.String(),
-              500: Type.String(),
-            }
-          }
-        }, async (request, reply) => {
-          let scheduleEvent = request.body;
-          await server.db.scheduleEvents.list();
-          return reply.code(200).send("Bravissimo");
-        });
-
-    server.post<{ Body: any, Reply: any}>(
-        "/spruzz",
-        {
-          schema: {
-            body: MRSSFeed.schema,
-            response: {
-              200: MRSSFeed.schema,
-              400: Type.String(),
-              500: Type.String(),
-            }
-          }
-        }, async (request, reply) => {
-          let scheduleEvent = request.body;
-          await server.db.scheduleEvents.add(scheduleEvent);
-          return reply.code(200).send("Bravissimo");
-        });
-
     server.post<{ Body: TMRSSFeed, Reply: TMRSSFeed|string }>(
-      "/mrss", 
-      {
-        schema: {
-          body: MRSSFeed.schema,
-          response: {
-            200: MRSSFeed.schema,
-            400: Type.String(),
-            500: Type.String(),
-          }
-        }
-      }, async (request, reply) => {
-        const mrssFeedBody = request.body;
-        const tenant = request.headers["host"];
-        try {
-          if (!tenant.match(/^localhost/) && process.env.NODE_ENV === 'production') {
-            if (mrssFeedBody.tenant !== tenant) {
-              return reply.code(400).send(`Expected tenant to be ${tenant}`);
+        "/mrss",
+        {
+          schema: {
+            body: MRSSFeed.schema,
+            response: {
+              200: MRSSFeed.schema,
+              400: Type.String(),
+              500: Type.String(),
             }
           }
-          const channel = await server.db.channels.getChannelById(mrssFeedBody.channelId);
-          if (!channel) {
-            return reply.code(400).send(`No channel with ID ${mrssFeedBody.channelId} was found. Must be created first.`);
+        }, async (request, reply) => {
+          const mrssFeedBody = request.body;
+          const tenant = request.headers["host"];
+          try {
+            if (!tenant.match(/^localhost/) && process.env.NODE_ENV === 'production') {
+              if (mrssFeedBody.tenant !== tenant) {
+                return reply.code(400).send(`Expected tenant to be ${tenant}`);
+              }
+            }
+            const channel = await server.db.channels.getChannelById(mrssFeedBody.channelId);
+            if (!channel) {
+              return reply.code(400).send(`No channel with ID ${mrssFeedBody.channelId} was found. Must be created first.`);
+            }
+            const mrssFeed = new MRSSFeed(mrssFeedBody);
+            await server.db.mrssFeeds.add(mrssFeed);
+            return reply.code(200).send(mrssFeed.item);
+          } catch (error) {
+            request.log.error(error);
+            return reply.code(500).send(error);
           }
-          const mrssFeed = new MRSSFeed(mrssFeedBody);
-          console.log(`mrssFeed creation ${JSON.stringify(mrssFeed)}`);
-          await server.db.mrssFeeds.add(mrssFeed);
-          console.log(`mrssFeed after creation ${JSON.stringify(mrssFeed.item)}`);
-          return reply.code(200).send(mrssFeed.item);
-        } catch (error) {
-          request.log.error(error);
-          return reply.code(500).send(error);
-        }
-      });
+        });
 
     server.get("/mrss", {
       schema: {
@@ -116,7 +79,7 @@ export const MRSSAutoSchedulerAPI: FastifyPluginAsync = async (server: FastifyIn
         return reply.code(500).send(error);
       }
     });
-    
+
     server.delete<{
       Params: IAPIMRSSFeedParams, Reply: string
     }>("/mrss/:feedId", {
@@ -166,9 +129,7 @@ export class MRSSAutoScheduler {
     const availableFeeds = await this.feedsDb.listAll();
     if (availableFeeds.find(feed => feed.id === "eyevinn")) {
       debug("Demo feed already available");
-    }
-    else {
-      return
+    } else {
       debug("Creating demo feed");
       const demoFeed = new MRSSFeed({
         id: "eyevinn",
@@ -233,7 +194,7 @@ export class MRSSAutoScheduler {
           await this.cleanup(feed);
         }
       } catch (error) {
-        console.error(error);
+        debug(error);
         console.error("Failed to populate schedule events for feed: " + feed.id);
       }
     }
@@ -241,30 +202,22 @@ export class MRSSAutoScheduler {
 
   private async populate(feed: MRSSFeed) {
     const now = dayjs();
-    console.log("THIS IS THE FEED")
-    console.log(JSON.stringify(feed))
-    console.log("THIS IS THE FEED END")
     await feed.refresh();
     const assets = feed.getAssets();
-    console.log(`[${JSON.stringify(assets)}]:get Assets() -> now: ${now}`);
-    //
     const scheduleEvents = await this.scheduleEventsDb.getScheduleEventsByChannelId(feed.channelId, {
       start: now.subtract(2 * 60 * 60, "second").valueOf(),
-      // end: now.add(12 * 60 * 60, "second").valueOf(),
+      end: now.add(12 * 60 * 60, "second").valueOf(),
     });
-
-    console.log("SCHEDULEEEE")
-    console.log(JSON.stringify(scheduleEvents))
-    console.log("SCHEDULEEEE")
-
     const ongoingAndFutureScheduleEvents = findOngoingAndFutureEvents(scheduleEvents, now);
-    console.log(`ongoingAndFutureScheduleEvents=[${JSON.stringify(ongoingAndFutureScheduleEvents)}] `);
     if (ongoingAndFutureScheduleEvents.length <= 4) {
+      const numberOfScheduleEvents = 5 - ongoingAndFutureScheduleEvents.length;
       let scheduleEventsToAdd: ScheduleEvent[] = [];
-      for (let i = 0; i < assets.length; i++) {
-          const asset = assets[i]
+      for (let i = 0; i < numberOfScheduleEvents; i++) {
+        let asset = assets[i];
+        if (asset) {
           const totalScheduleEventDuration = asset.duration;
           if (feed.shouldInsertLive) {
+            console.log(`[${feed.channelId}]: Adding schedule event (${ScheduleEventType.LIVE}): url=${feed.liveUrl}, start=${asset.start_time}, end=${asset.end_time}`);
             scheduleEventsToAdd.push(new ScheduleEvent({
               id: uuidv4(),
               channelId: feed.channelId,
@@ -278,22 +231,21 @@ export class MRSSAutoScheduler {
             }));
             feed.resetLiveEventCountdown();
           } else {
-            console.log(`[${feed.channelId}]: Adding schedule event (${ScheduleEventType.VOD}): title=${asset.title}, start=${asset.start_time}, end=${asset.end_time}`);
+            console.log(`[${feed.channelId}]: Adding schedule event (${ScheduleEventType.LIVE}): url=${feed.liveUrl}, start=${asset.start_time}, end=${asset.end_time}`);
             scheduleEventsToAdd.push(new ScheduleEvent({
               id: uuidv4(),
               channelId: feed.channelId,
               title: asset.title,
               duration: totalScheduleEventDuration,
               start_time: asset.start_time,
-              end_time: asset.start_time,
+              end_time: asset.end_time,
               url: asset.url,
               type: ScheduleEventType.VOD,
-            }));  
-            debug(`scheduleEventsToAdd-> ${JSON.stringify(scheduleEventsToAdd)}`)
+            }));
             feed.decreaseLiveEventCountdown();
           }
+        }
       }
-      console.log(`oncycle scheduleEventsToAdd [${JSON.stringify(scheduleEventsToAdd)}] ${now}`);
       for (const scheduleEvent of scheduleEventsToAdd) {
         await this.scheduleEventsDb.add(scheduleEvent);
       }
