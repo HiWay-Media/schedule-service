@@ -211,7 +211,6 @@ export class MRSSAutoScheduler {
     });
     const ongoingAndFutureScheduleEvents = findOngoingAndFutureEvents(scheduleEvents, now);
     console.log(`[${ongoingAndFutureScheduleEvents}] `);
-    const ongoingAndFutureScheduleEvents = findOngoingAndFutureEvents(scheduleEvents, now);
     if (ongoingAndFutureScheduleEvents.length <= 4) {
       const numberOfScheduleEvents = 5 - ongoingAndFutureScheduleEvents.length;
       let scheduleEventsToAdd: ScheduleEvent[] = [];
