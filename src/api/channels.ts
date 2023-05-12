@@ -137,7 +137,7 @@ const ChannelsAPI: FastifyPluginAsync = async (fastify: FastifyInstance, options
       }
     }, async (request, reply) => {
       try {
-        const { channelId } = request.params;
+        const { channelId } = request.params;
         const { date, start, end } = request.query;
 
         let rangeOpts: ScheduleRangeOptions = {};

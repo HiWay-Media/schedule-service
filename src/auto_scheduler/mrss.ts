@@ -22,37 +22,37 @@ export const MRSSAutoSchedulerAPI: FastifyPluginAsync = async (server: FastifyIn
 
   server.register(async (server: FastifyInstance) => {
     server.post<{ Body: TMRSSFeed, Reply: TMRSSFeed|string }>(
-        "/mrss",
-        {
-          schema: {
-            body: MRSSFeed.schema,
-            response: {
-              200: MRSSFeed.schema,
-              400: Type.String(),
-              500: Type.String(),
+      "/mrss", 
+      {
+        schema: {
+          body: MRSSFeed.schema,
+          response: {
+            200: MRSSFeed.schema,
+            400: Type.String(),
+            500: Type.String(),
+          }
+        }
+      }, async (request, reply) => {
+        const mrssFeedBody = request.body;
+        const tenant = request.headers["host"];
+        try {
+          if (!tenant.match(/^localhost/) && process.env.NODE_ENV === 'production') {
+            if (mrssFeedBody.tenant !== tenant) {
+              return reply.code(400).send(`Expected tenant to be ${tenant}`);
             }
           }
-        }, async (request, reply) => {
-          const mrssFeedBody = request.body;
-          const tenant = request.headers["host"];
-          try {
-            if (!tenant.match(/^localhost/) && process.env.NODE_ENV === 'production') {
-              if (mrssFeedBody.tenant !== tenant) {
-                return reply.code(400).send(`Expected tenant to be ${tenant}`);
-              }
-            }
-            const channel = await server.db.channels.getChannelById(mrssFeedBody.channelId);
-            if (!channel) {
-              return reply.code(400).send(`No channel with ID ${mrssFeedBody.channelId} was found. Must be created first.`);
-            }
-            const mrssFeed = new MRSSFeed(mrssFeedBody);
-            await server.db.mrssFeeds.add(mrssFeed);
-            return reply.code(200).send(mrssFeed.item);
-          } catch (error) {
-            request.log.error(error);
-            return reply.code(500).send(error);
+          const channel = await server.db.channels.getChannelById(mrssFeedBody.channelId);
+          if (!channel) {
+            return reply.code(400).send(`No channel with ID ${mrssFeedBody.channelId} was found. Must be created first.`);
           }
-        });
+          const mrssFeed = new MRSSFeed(mrssFeedBody);
+          await server.db.mrssFeeds.add(mrssFeed);
+          return reply.code(200).send(mrssFeed.item);
+        } catch (error) {
+          request.log.error(error);
+          return reply.code(500).send(error);
+        }
+      });
 
     server.get("/mrss", {
       schema: {
@@ -79,7 +79,7 @@ export const MRSSAutoSchedulerAPI: FastifyPluginAsync = async (server: FastifyIn
         return reply.code(500).send(error);
       }
     });
-
+    
     server.delete<{
       Params: IAPIMRSSFeedParams, Reply: string
     }>("/mrss/:feedId", {
@@ -212,12 +212,12 @@ export class MRSSAutoScheduler {
     if (ongoingAndFutureScheduleEvents.length <= 4) {
       const numberOfScheduleEvents = 5 - ongoingAndFutureScheduleEvents.length;
       let scheduleEventsToAdd: ScheduleEvent[] = [];
+      let nextStartTime = findLastEndTime(ongoingAndFutureScheduleEvents, now);
       for (let i = 0; i < numberOfScheduleEvents; i++) {
-        let asset = assets[i];
+        let asset = assets[Math.floor(Math.random() * assets.length)];
         if (asset) {
           const totalScheduleEventDuration = asset.duration;
-          const nextStartTime = asset.start_time;
-          const nextEndTime = asset.end_time;
+          const nextEndTime = nextStartTime + totalScheduleEventDuration * 1000;
           if (feed.shouldInsertLive) {
             console.log(`[${feed.channelId}]: Adding schedule event (${ScheduleEventType.LIVE}): url=${feed.liveUrl}, start=${new Date(nextStartTime).toISOString()}, end=${new Date(nextEndTime).toISOString()}`);
             scheduleEventsToAdd.push(new ScheduleEvent({
@@ -243,9 +243,10 @@ export class MRSSAutoScheduler {
               end_time: nextEndTime,
               url: asset.url,
               type: ScheduleEventType.VOD,
-            }));
+            }));  
             feed.decreaseLiveEventCountdown();
           }
+          nextStartTime = nextEndTime;
         }
       }
       for (const scheduleEvent of scheduleEventsToAdd) {
