@@ -211,7 +211,7 @@ export class MRSSAutoScheduler {
       //end: now.add(12 * 60 * 60, "second").valueOf(),
     });
     const ongoingAndFutureScheduleEvents = findOngoingAndFutureEvents(scheduleEvents, now);
-    console.log(`[${ongoingAndFutureScheduleEvents}] `);
+    console.log(`ongoingAndFutureScheduleEvents=[${JSON.stringify(ongoingAndFutureScheduleEvents)}] `);
     if (ongoingAndFutureScheduleEvents.length <= 4) {
       const numberOfScheduleEvents = 5 - ongoingAndFutureScheduleEvents.length;
       let scheduleEventsToAdd: ScheduleEvent[] = [];
@@ -247,12 +247,13 @@ export class MRSSAutoScheduler {
               url: asset.url,
               type: ScheduleEventType.VOD,
             }));  
+            debug(`scheduleEventsToAdd-> ${JSON.stringify(scheduleEventsToAdd)}`)
             feed.decreaseLiveEventCountdown();
           }
           nextStartTime = nextEndTime;
         }
       }
-      console.log(`[${scheduleEventsToAdd}] ${now}`);
+      console.log(`oncycle scheduleEventsToAdd [${JSON.stringify(scheduleEventsToAdd)}] ${now}`);
       for (const scheduleEvent of scheduleEventsToAdd) {
         await this.scheduleEventsDb.add(scheduleEvent);
       }
