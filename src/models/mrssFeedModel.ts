@@ -20,6 +20,9 @@ export interface MRSSFeedAttr {
   url: string;
   channelId: string;
   config: MRSSFeedConfig;
+  startTime?: number;
+  endTime?: number;
+  duration?: number;
 }
 
 export interface MRSSAsset {
