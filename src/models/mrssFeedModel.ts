@@ -28,8 +28,8 @@ export interface MRSSAsset {
   title: string;
   url: string;
   duration: number;
-  start_date?: number;
-  end_date?: number;
+  start_time?: number;
+  end_time?: number;
 }
 
 interface MRSSCache {
@@ -156,7 +156,7 @@ export class MRSSFeed {
           // update duration
           const duration = await hlsduration(new URL(asset.url));
           asset.duration = Math.ceil(duration);
-          console.log(`Updated asset duration for ${asset.title} to ${asset.duration} | startTime=${asset.start_date} | endTime=${asset.end_date}`);
+          console.log(`Updated asset duration for ${asset.title} to ${asset.duration} | startTime=${asset.start_time} | endTime=${asset.end_time}`);
         }
       }
     }
@@ -169,8 +169,8 @@ export class MRSSFeed {
       cachedAsset.title = feedEntry.title;
       cachedAsset.url = feedEntry.link;
       cachedAsset.duration = -1;
-      cachedAsset.start_date = feedEntry.start_date
-      cachedAsset.end_date = feedEntry.start_date
+      cachedAsset.start_time = feedEntry.start_time
+      cachedAsset.end_time = feedEntry.start_time
     } else {
       debug("Adding new entry to cache");
       this.cache.assets.push({
@@ -178,8 +178,8 @@ export class MRSSFeed {
         title: feedEntry.title,
         url: feedEntry.link,
         duration: -1,
-        start_date : feedEntry.start_date,
-        end_date : feedEntry.end_date,
+        start_time : feedEntry.start_time,
+        end_time : feedEntry.start_time,
       });
     }
   }
