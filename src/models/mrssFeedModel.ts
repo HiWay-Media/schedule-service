@@ -164,7 +164,7 @@ export class MRSSFeed {
 
   private addEntryToCache(feedEntry: any) {
     let cachedAsset = this.cache.assets.find(a => a.id === feedEntry.id);
-    debug(`Adding new entry to cache ${JSON.stringify(feedEntry)}`);
+    console.log(`Adding new entry to cache ${JSON.stringify(feedEntry)}`);
     if (cachedAsset) {
       cachedAsset.title = feedEntry.title;
       cachedAsset.url = feedEntry.link;

@@ -204,12 +204,17 @@ export class MRSSAutoScheduler {
     const now = dayjs();
     await feed.refresh();
     const assets = feed.getAssets();
-    console.log(`[${assets}]:get Assets() -> now: ${now}`);
+    console.log(`[${JSON.stringify(assets)}]:get Assets() -> now: ${now}`);
     //
     const scheduleEvents = await this.scheduleEventsDb.getScheduleEventsByChannelId(feed.channelId, {
       //start: now.subtract(2 * 60 * 60, "second").valueOf(),
       //end: now.add(12 * 60 * 60, "second").valueOf(),
     });
+
+    console.log("SCHEDULEEEE")
+    console.log(JSON.stringify(scheduleEvents))
+    console.log("SCHEDULEEEE")
+
     const ongoingAndFutureScheduleEvents = findOngoingAndFutureEvents(scheduleEvents, now);
     console.log(`ongoingAndFutureScheduleEvents=[${JSON.stringify(ongoingAndFutureScheduleEvents)}] `);
     if (ongoingAndFutureScheduleEvents.length <= 4) {
