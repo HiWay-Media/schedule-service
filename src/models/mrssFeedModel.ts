@@ -156,7 +156,7 @@ export class MRSSFeed {
           // update duration
           const duration = await hlsduration(new URL(asset.url));
           asset.duration = Math.ceil(duration);
-          debug(`Updated asset duration for ${asset.title} to ${asset.duration} | startTime=${asset.startTime} | endTime=${asset.endTime}`);
+          console.log(`Updated asset duration for ${asset.title} to ${asset.duration} | startTime=${asset.startTime} | endTime=${asset.endTime}`);
         }
       }
     }
