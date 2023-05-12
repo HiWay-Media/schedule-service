@@ -2,6 +2,7 @@ name: Build image and push to Docker Hub
 #
 on:
   push:
+    branches: [ "main" ]
     tags:
       - '*'
 #
