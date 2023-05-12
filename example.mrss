@@ -4,14 +4,14 @@
 <updated>2023-02-10T10:14:27.479Z</updated>
 <duration>5000</duration>
 <startTime>1683876059</startTime>
-<startTime>1683876060</startTime>
+<endTime>1683876060</endTime>
 <entry>
 <title>stswe19-industry-group-low-latency-hls</title>
 <id>842f1c9f-a3ec-413e-9bec-d7bb967391df</id>
 <link>http://lambda.eyevinn.technology/stitch/master.m3u8?payload=eyJ1cmkiOiJodHRwczovL2xhYi5jZG4uZXlldmlubi50ZWNobm9sb2d5L3N0c3dlMTktaW5kdXN0cnktZ3JvdXAtbG93LWxhdGVuY3ktaGxzLm1wNC9tYW5pZmVzdC5tM3U4IiwiYnJlYWtzIjpbeyJwb3MiOjAsImR1cmF0aW9uIjoxMDUwMDAsInVybCI6Imh0dHBzOi8vbWFpdHYtdm9kLmxhYi5leWV2aW5uLnRlY2hub2xvZ3kvVklOTi5tcDQvbWFzdGVyLm0zdTgifV19</link>
 <duration>5000</duration>
 <startTime>1683876060</startTime>
-<startTime>1683876065</startTime>
+<endTime>1683876065</endTime>
 </entry>
 <entry>
 <title>stswe19-global-but-local-ott-platform</title>
@@ -19,7 +19,7 @@
 <link>http://lambda.eyevinn.technology/stitch/master.m3u8?payload=eyJ1cmkiOiJodHRwczovL2xhYi5jZG4uZXlldmlubi50ZWNobm9sb2d5L3N0c3dlMTktZ2xvYmFsLWJ1dC1sb2NhbC1vdHQtcGxhdGZvcm0ubXA0L21hbmlmZXN0Lm0zdTgiLCJicmVha3MiOlt7InBvcyI6MCwiZHVyYXRpb24iOjEwNTAwMCwidXJsIjoiaHR0cHM6Ly9tYWl0di12b2QubGFiLmV5ZXZpbm4udGVjaG5vbG9neS9WSU5OLm1wNC9tYXN0ZXIubTN1OCJ9XX0=</link>
 <duration>5000</duration>
 <startTime>1683876065</startTime>
-<startTime>1683876082</startTime>
+<endTime>1683876082</endTime>
 </entry>
 <entry>
 </feed>
