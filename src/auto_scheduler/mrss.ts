@@ -81,7 +81,9 @@ export const MRSSAutoSchedulerAPI: FastifyPluginAsync = async (server: FastifyIn
             return reply.code(400).send(`No channel with ID ${mrssFeedBody.channelId} was found. Must be created first.`);
           }
           const mrssFeed = new MRSSFeed(mrssFeedBody);
+          console.log(`mrssFeed creation ${JSON.stringify(mrssFeed)}`);
           await server.db.mrssFeeds.add(mrssFeed);
+          console.log(`mrssFeed after creation ${JSON.stringify(mrssFeed.item)}`);
           return reply.code(200).send(mrssFeed.item);
         } catch (error) {
           request.log.error(error);
