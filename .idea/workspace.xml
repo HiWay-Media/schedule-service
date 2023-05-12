@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ea321260-ce25-40f3-a5da-6ea5edc92060" name="Changes" comment="fix">
+    <list default="true" id="ea321260-ce25-40f3-a5da-6ea5edc92060" name="Changes" comment="fixed the property names">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/auto_scheduler/mrss.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/auto_scheduler/mrss.ts" afterDir="false" />
     </list>
@@ -67,7 +67,7 @@
       <updated>1683877393639</updated>
       <workItem from="1683877394944" duration="1570000" />
       <workItem from="1683878986947" duration="2734000" />
-      <workItem from="1683881732806" duration="1410000" />
+      <workItem from="1683881732806" duration="9791000" />
     </task>
     <task id="LOCAL-00001" summary="feat: added custom starttime and endtime to the xml">
       <created>1683878244753</created>
@@ -97,7 +97,70 @@
       <option name="project" value="LOCAL" />
       <updated>1683881149603</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="dynamo">
+      <created>1683883407150</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1683883407150</updated>
+    </task>
+    <task id="LOCAL-00006" summary="dynamo">
+      <created>1683886395010</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1683886395010</updated>
+    </task>
+    <task id="LOCAL-00007" summary="dynamo">
+      <created>1683887118060</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1683887118060</updated>
+    </task>
+    <task id="LOCAL-00008" summary="removing demo feed">
+      <created>1683887759182</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1683887759182</updated>
+    </task>
+    <task id="LOCAL-00009" summary="fixed the property names">
+      <created>1683893395780</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1683893395780</updated>
+    </task>
+    <task id="LOCAL-00010" summary="fixed the property names">
+      <created>1683894162671</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1683894162671</updated>
+    </task>
+    <task id="LOCAL-00011" summary="fixed the property names">
+      <created>1683894677960</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1683894677960</updated>
+    </task>
+    <task id="LOCAL-00012" summary="fixed the property names">
+      <created>1683894765817</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1683894765817</updated>
+    </task>
+    <task id="LOCAL-00013" summary="fixed the property names">
+      <created>1683896243044</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1683896243044</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -117,6 +180,9 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="feat: added custom starttime and endtime to the xml" />
     <MESSAGE value="fix" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix" />
+    <MESSAGE value="dynamo" />
+    <MESSAGE value="removing demo feed" />
+    <MESSAGE value="fixed the property names" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed the property names" />
   </component>
 </project>

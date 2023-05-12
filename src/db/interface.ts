@@ -24,7 +24,6 @@ export interface IDbChannelsAdapter {
 export interface IDbScheduleEventsAdapter {
   init: () => Promise<void>;
   add: (scheduleEvent: ScheduleEvent) => Promise<ScheduleEvent>;
-  list: () => Promise<ScheduleEvent[]>;
   getScheduleEventsByChannelId: (channelId: string, rangeOpts: ScheduleRangeOptions) => Promise<ScheduleEvent[]>;
   remove: (id: string) => Promise<boolean>;
   removeScheduleEvents: (channelId: string, rangeOpts: ScheduleRangeOptions) => Promise<number>;

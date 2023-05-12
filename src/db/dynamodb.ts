@@ -267,10 +267,6 @@ class DbScheduleEvents implements IDbScheduleEventsAdapter {
     });
   }
 
-  async list() {
-    return null
-  }
-
   async add(scheduleEvent: ScheduleEvent) {
     await this.db.put(this.schedulesTableName, scheduleEvent.item);
     return scheduleEvent;
@@ -280,9 +276,7 @@ class DbScheduleEvents implements IDbScheduleEventsAdapter {
     const filter = this.rangeToFilter(channelId, rangeOpts);
     const items = await this.db.scan(this.schedulesTableName, filter);
     let scheduleEvents: ScheduleEvent[] = [];
-    //console.log(`getScheduleEventsByChannelId items ${JSON.stringify(items)}`);
     items.forEach(item => {
-      //console.log(`getScheduleEventsByChannelId items forEach item=${JSON.stringify(item)}`);
       scheduleEvents.push(new ScheduleEvent({
         id: item.id,
         channelId: item.channelId,
@@ -294,7 +288,6 @@ class DbScheduleEvents implements IDbScheduleEventsAdapter {
         type: item.type,
         liveUrl: item.liveUrl,
       }));
-      console.log(`getScheduleEventsByChannelId items forEach item title: ${item.title} start_time=${parseInt(item.start_time, 10)} | end_time=${parseInt(item.end_time, 10)}`);
     });
     const sortedScheduleEvents = scheduleEvents.sort((a, b) => a.start_time - b.start_time);
     return sortedScheduleEvents;
