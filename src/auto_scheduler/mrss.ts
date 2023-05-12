@@ -214,7 +214,7 @@ export class MRSSAutoScheduler {
       let scheduleEventsToAdd: ScheduleEvent[] = [];
       let nextStartTime = findLastEndTime(ongoingAndFutureScheduleEvents, now);
       for (let i = 0; i < numberOfScheduleEvents; i++) {
-        let asset = assets[Math.floor(Math.random() * assets.length)];
+        let asset = assets[i];
         if (asset) {
           const totalScheduleEventDuration = asset.duration;
           const nextEndTime = nextStartTime + totalScheduleEventDuration * 1000;

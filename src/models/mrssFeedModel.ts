@@ -27,6 +27,8 @@ export interface MRSSAsset {
   title: string;
   url: string;
   duration: number;
+  start_time: number;
+  end_time: number;
 }
 
 interface MRSSCache {
@@ -164,14 +166,18 @@ export class MRSSFeed {
     if (cachedAsset) {
       cachedAsset.title = feedEntry.title;
       cachedAsset.url = feedEntry.link;
-      cachedAsset.duration = -1;
+      cachedAsset.duration = feedEntry.duration ? feedEntry.duration :  -1 ;
+      cachedAsset.start_time= feedEntry.start_time;
+      cachedAsset.end_time = feedEntry.endTime;
     } else {
       debug("Adding new entry to cache");
       this.cache.assets.push({
         id: feedEntry.id,
         title: feedEntry.title,
         url: feedEntry.link,
-        duration: -1,
+        duration: feedEntry.duration ? feedEntry.duration :  -1,
+        start_time: feedEntry.start_time,
+        end_time: feedEntry.end_time,
       });
     }
   }
