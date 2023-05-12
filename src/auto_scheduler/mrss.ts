@@ -217,8 +217,9 @@ export class MRSSAutoScheduler {
         let asset = assets[i];
         if (asset) {
           const totalScheduleEventDuration = asset.duration;
+          /*
           if (feed.shouldInsertLive) {
-            console.log(`[${feed.channelId}]: Adding schedule event (${ScheduleEventType.LIVE}): url=${feed.liveUrl}, start=${asset.start_time}, end=${asset.end_time}`);
+            console.log(`[${feed.channelId}]: Adding schedule event (${ScheduleEventType.LIVE}): url=${asset.url}, start=${asset.start_time}, end=${asset.end_time}`);
             scheduleEventsToAdd.push(new ScheduleEvent({
               id: uuidv4(),
               channelId: feed.channelId,
@@ -232,7 +233,8 @@ export class MRSSAutoScheduler {
             }));
             feed.resetLiveEventCountdown();
           } else {
-            console.log(`[${feed.channelId}]: Adding schedule event (${ScheduleEventType.LIVE}): url=${feed.liveUrl}, start=${asset.start_time}, end=${asset.end_time}`);
+           */
+            console.log(`[${feed.channelId}]: Adding schedule event (${ScheduleEventType.VOD}): url=${asset.url}, start=${asset.start_time}, end=${asset.end_time}`);
             scheduleEventsToAdd.push(new ScheduleEvent({
               id: uuidv4(),
               channelId: feed.channelId,
@@ -244,7 +246,7 @@ export class MRSSAutoScheduler {
               type: ScheduleEventType.VOD,
             }));
             feed.decreaseLiveEventCountdown();
-          }
+          //}
         }
       }
       for (const scheduleEvent of scheduleEventsToAdd) {
