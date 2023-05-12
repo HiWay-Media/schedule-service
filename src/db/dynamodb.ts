@@ -276,7 +276,9 @@ class DbScheduleEvents implements IDbScheduleEventsAdapter {
     const filter = this.rangeToFilter(channelId, rangeOpts);
     const items = await this.db.scan(this.schedulesTableName, filter);
     let scheduleEvents: ScheduleEvent[] = [];
+    console.log(`getScheduleEventsByChannelId items ${JSON.stringify(items)}`);
     items.forEach(item => {
+      console.log(`getScheduleEventsByChannelId items forEach item=${JSON.stringify(item)}`);
       scheduleEvents.push(new ScheduleEvent({
         id: item.id,
         channelId: item.channelId,
