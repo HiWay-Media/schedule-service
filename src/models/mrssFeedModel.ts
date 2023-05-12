@@ -20,9 +20,7 @@ export interface MRSSFeedAttr {
   url: string;
   channelId: string;
   config: MRSSFeedConfig;
-  startTime?: number;
-  endTime?: number;
-  duration?: number;
+  //duration?: number;
 }
 
 export interface MRSSAsset {
@@ -30,6 +28,8 @@ export interface MRSSAsset {
   title: string;
   url: string;
   duration: number;
+  startTime?: number;
+  endTime?: number;
 }
 
 interface MRSSCache {
@@ -164,10 +164,13 @@ export class MRSSFeed {
 
   private addEntryToCache(feedEntry: any) {
     let cachedAsset = this.cache.assets.find(a => a.id === feedEntry.id);
+    debug(`Adding new entry to cache ${feedEntry}`);
     if (cachedAsset) {
       cachedAsset.title = feedEntry.title;
       cachedAsset.url = feedEntry.link;
       cachedAsset.duration = -1;
+      cachedAsset.startTime = feedEntry.startTime
+      cachedAsset.endTime = feedEntry.endTime
     } else {
       debug("Adding new entry to cache");
       this.cache.assets.push({
@@ -175,6 +178,8 @@ export class MRSSFeed {
         title: feedEntry.title,
         url: feedEntry.link,
         duration: -1,
+        startTime : feedEntry.startTime,
+        endTime : feedEntry.endTime,
       });
     }
   }
