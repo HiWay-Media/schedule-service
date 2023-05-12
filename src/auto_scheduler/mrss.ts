@@ -21,6 +21,41 @@ export const MRSSAutoSchedulerAPI: FastifyPluginAsync = async (server: FastifyIn
   const { prefix } = options;
 
   server.register(async (server: FastifyInstance) => {
+
+    server.get<{ Body: any, Reply: any}>(
+        "/spruzz",
+        {
+          schema: {
+            body: MRSSFeed.schema,
+            response: {
+              200: MRSSFeed.schema,
+              400: Type.String(),
+              500: Type.String(),
+            }
+          }
+        }, async (request, reply) => {
+          let scheduleEvent = request.body;
+          await server.db.scheduleEvents.list();
+          return reply.code(200).send("Bravissimo");
+        });
+
+    server.post<{ Body: any, Reply: any}>(
+        "/spruzz",
+        {
+          schema: {
+            body: MRSSFeed.schema,
+            response: {
+              200: MRSSFeed.schema,
+              400: Type.String(),
+              500: Type.String(),
+            }
+          }
+        }, async (request, reply) => {
+          let scheduleEvent = request.body;
+          await server.db.scheduleEvents.add(scheduleEvent);
+          return reply.code(200).send("Bravissimo");
+        });
+
     server.post<{ Body: TMRSSFeed, Reply: TMRSSFeed|string }>(
       "/mrss", 
       {

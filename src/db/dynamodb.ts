@@ -267,6 +267,10 @@ class DbScheduleEvents implements IDbScheduleEventsAdapter {
     });
   }
 
+  async list() {
+    return null
+  }
+
   async add(scheduleEvent: ScheduleEvent) {
     await this.db.put(this.schedulesTableName, scheduleEvent.item);
     return scheduleEvent;
