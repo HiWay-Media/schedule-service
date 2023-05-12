@@ -171,8 +171,8 @@ export class MRSSFeed {
       cachedAsset.title = feedEntry.title;
       cachedAsset.url = feedEntry.link;
       cachedAsset.duration = -1;
-      cachedAsset.start_time = feedEntry.start_time
-      cachedAsset.end_time = feedEntry.start_time
+      cachedAsset.start_time = feedEntry.startTime
+      cachedAsset.end_time = feedEntry.endTime
     } else {
       debug("Adding new entry to cache");
       this.cache.assets.push({
@@ -180,8 +180,8 @@ export class MRSSFeed {
         title: feedEntry.title,
         url: feedEntry.link,
         duration: -1,
-        start_time : feedEntry.start_time,
-        end_time : feedEntry.start_time,
+        start_time : feedEntry.startTime,
+        end_time : feedEntry.endTime,
       });
     }
   }
