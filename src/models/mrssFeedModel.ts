@@ -136,6 +136,8 @@ export class MRSSFeed {
       debug("Feed is newer than the cache, update the entries");
       this.cache.updated = dayjs().unix();
       const feedEntry = json.feed.entry;
+      console.log("FEED FEED FEEED")
+      console.log(json.feed)
       let feedEntryLength;
       if (feedEntry && feedEntry.length) {
         feedEntryLength = feedEntry.length;
