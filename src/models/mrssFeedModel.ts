@@ -53,6 +53,7 @@ export class MRSSFeed {
   private attrs: MRSSFeedAttr;
   private cache: MRSSCache;
   private liveEventCountdown: number;
+  loaded: boolean;
 
   public static schema = MRSSFeedSchema;
 
