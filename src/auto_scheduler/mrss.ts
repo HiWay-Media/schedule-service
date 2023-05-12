@@ -126,7 +126,6 @@ export class MRSSAutoScheduler {
 
   // insert demo feed if not exists
   async bootstrap(demoTenant: string) {
-    return
     const availableFeeds = await this.feedsDb.listAll();
     if (availableFeeds.find(feed => feed.id === "eyevinn")) {
       debug("Demo feed already available");
@@ -207,7 +206,7 @@ export class MRSSAutoScheduler {
     const assets = feed.getAssets();
     const scheduleEvents = await this.scheduleEventsDb.getScheduleEventsByChannelId(feed.channelId, {
       start: now.subtract(2 * 60 * 60, "second").valueOf(),
-      // end: now.add(12 * 60 * 60, "second").valueOf(),
+      end: now.add(12 * 60 * 60, "second").valueOf(),
     });
     const ongoingAndFutureScheduleEvents = findOngoingAndFutureEvents(scheduleEvents, now);
     if (ongoingAndFutureScheduleEvents.length <= 4) {
@@ -217,36 +216,36 @@ export class MRSSAutoScheduler {
         let asset = assets[i];
         if (asset) {
           const totalScheduleEventDuration = asset.duration;
-          /*
+          const nextStartTime = asset.start_time;
+          const nextEndTime = asset.end_time;
           if (feed.shouldInsertLive) {
-            console.log(`[${feed.channelId}]: Adding schedule event (${ScheduleEventType.LIVE}): url=${asset.url}, start=${asset.start_time}, end=${asset.end_time}`);
+            console.log(`[${feed.channelId}]: Adding schedule event (${ScheduleEventType.LIVE}): url=${feed.liveUrl}, start=${new Date(nextStartTime).toISOString()}, end=${new Date(nextEndTime).toISOString()}`);
             scheduleEventsToAdd.push(new ScheduleEvent({
               id: uuidv4(),
               channelId: feed.channelId,
               title: "LIVE EVENT",
               duration: totalScheduleEventDuration,
-              start_time: asset.start_time,
-              end_time: asset.end_time,
+              start_time: nextStartTime,
+              end_time: nextEndTime,
               url: asset.url,
               liveUrl: feed.liveUrl,
               type: ScheduleEventType.LIVE,
             }));
             feed.resetLiveEventCountdown();
           } else {
-           */
-            console.log(`[${feed.channelId}]: Adding schedule event (${ScheduleEventType.VOD}): url=${asset.url}, start=${asset.start_time}, end=${asset.end_time}`);
+            console.log(`[${feed.channelId}]: Adding schedule event (${ScheduleEventType.VOD}): title=${asset.title}, start=${new Date(nextStartTime).toISOString()}, end=${new Date(nextEndTime).toISOString()}`);
             scheduleEventsToAdd.push(new ScheduleEvent({
               id: uuidv4(),
               channelId: feed.channelId,
               title: asset.title,
               duration: totalScheduleEventDuration,
-              start_time: asset.start_time,
-              end_time: asset.end_time,
+              start_time: nextStartTime,
+              end_time: nextEndTime,
               url: asset.url,
               type: ScheduleEventType.VOD,
             }));
             feed.decreaseLiveEventCountdown();
-          //}
+          }
         }
       }
       for (const scheduleEvent of scheduleEventsToAdd) {

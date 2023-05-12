@@ -136,8 +136,6 @@ export class MRSSFeed {
       debug("Feed is newer than the cache, update the entries");
       this.cache.updated = dayjs().unix();
       const feedEntry = json.feed.entry;
-      console.log("FEED FEED FEEED")
-      console.log(json.feed)
       let feedEntryLength;
       if (feedEntry && feedEntry.length) {
         feedEntryLength = feedEntry.length;
@@ -170,7 +168,7 @@ export class MRSSFeed {
     if (cachedAsset) {
       cachedAsset.title = feedEntry.title;
       cachedAsset.url = feedEntry.link;
-      cachedAsset.duration = -1;
+      cachedAsset.duration ? feedEntry.duration : -1;
       cachedAsset.start_time = feedEntry.startTime
       cachedAsset.end_time = feedEntry.endTime
     } else {
@@ -179,7 +177,7 @@ export class MRSSFeed {
         id: feedEntry.id,
         title: feedEntry.title,
         url: feedEntry.link,
-        duration: -1,
+        duration: feedEntry.duration ? feedEntry.duration : -1,
         start_time : feedEntry.startTime,
         end_time : feedEntry.endTime,
       });
