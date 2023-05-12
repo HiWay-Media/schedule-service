@@ -270,22 +270,22 @@ export class MRSSAutoScheduler {
               channelId: feed.channelId,
               title: "LIVE EVENT",
               duration: totalScheduleEventDuration,
-              start_time: asset.startTime,
-              end_time: asset.endTime,
+              start_time: asset.start_date,
+              end_time: asset.end_date,
               url: asset.url,
               liveUrl: feed.liveUrl,
               type: ScheduleEventType.LIVE,
             }));
             feed.resetLiveEventCountdown();
           } else {
-            console.log(`[${feed.channelId}]: Adding schedule event (${ScheduleEventType.VOD}): title=${asset.title}, start=${asset.startTime}, end=${asset.endTime}`);
+            console.log(`[${feed.channelId}]: Adding schedule event (${ScheduleEventType.VOD}): title=${asset.title}, start=${asset.start_date}, end=${asset.end_date}`);
             scheduleEventsToAdd.push(new ScheduleEvent({
               id: uuidv4(),
               channelId: feed.channelId,
               title: asset.title,
               duration: totalScheduleEventDuration,
-              start_time: asset.startTime,
-              end_time: asset.endTime,
+              start_time: asset.start_date,
+              end_time: asset.start_date,
               url: asset.url,
               type: ScheduleEventType.VOD,
             }));  
