@@ -231,7 +231,7 @@ export class MRSSAutoScheduler {
           await this.cleanup(feed);
         }
       } catch (error) {
-        debug(error);
+        console.error(error);
         console.error("Failed to populate schedule events for feed: " + feed.id);
       }
     }
