@@ -29,7 +29,7 @@
       "aws-sdk": "^2.1004.0",
       "dayjs": "^1.10.7",
       "debug": "^4.3.2",
-      "fast-xml-parser": "^3.20.3",
+      "fast-xml-parser": "^4.2.4",
       "fastify": "^3.22.0",
       "fastify-plugin": "^3.0.0",
       "fastify-swagger": "^4.12.4",
